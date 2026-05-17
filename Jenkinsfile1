@@ -1,0 +1,31 @@
+
+pipeline {
+    agent any
+    stages{
+        stage('Checkou code'){
+            steps{
+
+                git 'https://github.com/rakeshr6/demo-repo-jenkinsfile.git'
+
+            }
+            post {
+                success{
+    slackSend(
+    tokenCredentialId: 'Slack-1',
+    channel: '#jenkin-notification',
+    color: '#00FF00',
+    message: "Hi Rakesh ,Build Successful: ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
+          )      
+                }
+                failure{
+                   slackSend(
+    tokenCredentialId: 'Slack-1',
+    channel: '#jenkin-notification',
+    color: '#00FF00',
+    message: "Build Successful: ${env.JOB_NAME} [${env.BUILD_NUMBER}]"
+)
+                }
+            }
+        }
+    }
+}
